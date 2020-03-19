@@ -1,22 +1,32 @@
-This plugin template uses Typescript. If you are familiar with Javascript, Typescript will
-look very familiar. In fact, valid Javascript code is already valid Typescript code.
+# # Visual Property
 
-Typescript adds type annotations to variables. This allows code editors such as Visual Studio Code
-to provide information about the Figma API while you are writing code, as well as help catch bugs
-you previously didn't notice.
+It's pain to click on object for just a quick check of color code and more pain when we update it. Visual Property Plugin build to solve this problems.
 
-For more information, visit https://www.typescriptlang.org/
+![Screenshot](docs/cover_art.png)
 
-Using Typescript requires a compiler to convert Typescript (code.ts) into Javascript (code.js)
-for the browser to run.
+## How to use this plugin
 
-To get the TypeScript compiler working:
+1. **Select element** you want to create text
+2. **Click Visual Property plugin** from Plugin menu
+3. **Click Add** to add Color code text under your element
+4. You can **edit text** style but not node name
+5. You can **Click Update all** to update color code when you change element's color
 
-1. Download Visual Studio Code if you haven't already: https://code.visualstudio.com/.
-2. Install the TypeScript compiler globally: `sudo npm install -g typescript`.
-3. Open this directory in Visual Studio Code.
-4. Compile TypeScript to JavaScript: Run the "Terminal > Run Build Task..." menu item,
-    then select "tsc: watch - tsconfig.json". You will have to do this again every time
-    you reopen Visual Studio Code.
+#### Tip & Something that may confusing you)
 
-That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+* If you call plugin with out select any element the **plugin will call "update all" without UI**
+* plugin can read color from style
+
+## Todo
+
+* Complext element has more than one fills and stroke
+* **Description** of component is next feature
+
+## Contribute
+
+Follow this document for setup: https://www.figma.com/plugin-docs/setup/ 
+Repository url: https://github.com/apirak/visible-property
+Figma design: https://www.figma.com/file/IYX2diPRY4Vir7FzhIB2la/Visual-Property
+
+feel free to contact me on twitter
+[@apirak](https://twitter.com/apirak) 
