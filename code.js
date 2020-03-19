@@ -71,41 +71,31 @@ function updateUI() {
     }
     figma.ui.postMessage(message);
 }
-function updateTextByFill(node, nodeId) {
+function getColorByType(nodeId, type) {
     let selectedNode = figma.getNodeById(nodeId);
     if (selectedNode) {
-        if (selectedNode.fills[0]) {
-            const hexColor = colorToHex(selectedNode.fills[0]["color"]);
-            setText(node, hexColor.toUpperCase());
+        if (selectedNode[type][0]) {
+            const hexColor = colorToHex(selectedNode[type][0]["color"]);
+            return hexColor.toUpperCase();
         }
     }
 }
-function updateTextByStroke(node, nodeId) {
-    let selectedNode = figma.getNodeById(nodeId);
-    if (selectedNode) {
-        if (selectedNode.strokes[0]) {
-            const hexColor = colorToHex(selectedNode.strokes[0]["color"]);
-            setText(node, hexColor.toUpperCase());
-        }
-    }
+function getFillsColor(nodeId) {
+    getColorByType(nodeId, "fills");
+}
+function getStrokesColor(nodeId) {
+    getColorByType(nodeId, "strokes");
 }
 function updateAll() {
     const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
     nodes.forEach(node => {
         let names = node.name.split(" ");
         let nodeId = names[0].substring(1);
-        // [TODO] learn regular expression from https://regexone.com (-_-)'
-        // let nodeId = RegExp(/^#(.*)/).exec(names[0])[1]
-        // RegExp(/(?:#)[^\s]*/).exec("#asdf 232")
-        // let nodeId = RegExp(/^#(.*)/).exec(node.name);
-        console.log("name:" + node.name);
-        console.log("ID: " + nodeId);
-        console.log("type: " + names[1]);
         if (names[1] == "stroke") {
-            updateTextByStroke(node, nodeId);
+            setText(node, getStrokesColor(nodeId));
         }
         else {
-            updateTextByFill(node, nodeId);
+            setText(node, getFillsColor(nodeId));
         }
     });
 }

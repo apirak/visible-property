@@ -12,7 +12,7 @@ It's pain to click on object for just a quick check of color code and more pain 
 4. You can **edit text** style but not node name
 5. You can **Click Update all** to update color code when you change element's color
 
-#### Tip & Something that may confusing you)
+#### Tip & Something you may confuse
 
 * If you call plugin with out select any element the **plugin will call "update all" without UI**
 * plugin can read color from style
@@ -25,7 +25,9 @@ It's pain to click on object for just a quick check of color code and more pain 
 ## Contribute
 
 Follow this document for setup: https://www.figma.com/plugin-docs/setup/ 
+
 Repository url: https://github.com/apirak/visible-property
+
 Figma design: https://www.figma.com/file/IYX2diPRY4Vir7FzhIB2la/Visual-Property
 
 feel free to contact me on twitter

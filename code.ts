@@ -69,26 +69,22 @@ function updateUI():void {
   figma.ui.postMessage(message);
 }
 
-function updateTextByFill(node:TextNode, nodeId:string){
+function getColorByType(nodeId:string, type:string):string {
   let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
-
   if(selectedNode) {
-    if(selectedNode.fills[0]) {
-      const hexColor:string = colorToHex(selectedNode.fills[0]["color"]);
-      setText(node as TextNode, hexColor.toUpperCase());
+    if(selectedNode[type][0]) {
+      const hexColor:string = colorToHex(selectedNode[type][0]["color"]);
+      return hexColor.toUpperCase();
     }
   }
 }
 
-function updateTextByStroke(node:TextNode, nodeId:string) {
-  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
+function getFillsColor(nodeId:string):string {
+  getColorByType(nodeId, "fills");
+}
 
-  if(selectedNode) {
-    if(selectedNode.strokes[0]) {
-      const hexColor:string = colorToHex(selectedNode.strokes[0]["color"]);
-      setText(node as TextNode, hexColor.toUpperCase());
-    }
-  }
+function getStrokesColor(nodeId:string):string {
+  getColorByType(nodeId, "strokes");
 }
 
 function updateAll() {
@@ -98,19 +94,10 @@ function updateAll() {
     let names = node.name.split(" ");
     let nodeId = names[0].substring(1);
 
-    // [TODO] learn regular expression from https://regexone.com (-_-)'
-    // let nodeId = RegExp(/^#(.*)/).exec(names[0])[1]
-    // RegExp(/(?:#)[^\s]*/).exec("#asdf 232")
-    // let nodeId = RegExp(/^#(.*)/).exec(node.name);
-    
-    console.log("name:"+node.name);
-    console.log("ID: "+nodeId);
-    console.log("type: "+names[1]);
-
     if (names[1] == "stroke") {
-      updateTextByStroke(node as TextNode, nodeId);
+      setText(node as TextNode, getStrokesColor(nodeId));
     } else {
-      updateTextByFill(node as TextNode, nodeId);
+      setText(node as TextNode, getFillsColor(nodeId));
     }
   });
 }
