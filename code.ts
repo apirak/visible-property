@@ -25,6 +25,13 @@ function colorToHex(color:any):string{
   return rgbToHex(color["r"], color["g"], color["b"]);
 }
 
+function matchName(name:string):{nodeId:string, type:string} {
+  let names = name.match(/#([0-9\:]+) ?([a-z]*)/);
+  let nodeId = names[1] ? names[1] : null;
+  let type = names[2] ? names[2] : "fill";
+  return {nodeId, type};
+}
+
 async function setText(text:TextNode, newCharacters:string) {
   let font = <FontName> text.fontName;
   await figma.loadFontAsync({ family:font.family, style:font.style });
@@ -91,10 +98,8 @@ function updateAll() {
   const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
   
   nodes.forEach(node => {
-    let names = node.name.split(" ");
-    let nodeId = names[0].substring(1);
-
-    if (names[1] == "stroke") {
+    let {nodeId, type} = matchName(node.name);
+    if (type == "stroke") {
       setText(node as TextNode, getStrokesColor(nodeId));
     } else {
       setText(node as TextNode, getFillsColor(nodeId));
@@ -125,11 +130,6 @@ figma.ui.onmessage = msg => {
   } 
 };
 
-if (selectedNodeExist()) {
-  figma.showUI(__html__);
-  figma.ui.resize(250, 220);
-  updateUI();
-} else {
-  updateAll();
-  figma.closePlugin();
-}
+figma.showUI(__html__);
+figma.ui.resize(250, 220);
+updateUI();

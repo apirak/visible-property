@@ -28,6 +28,12 @@ function rgbToHex(r, g, b) {
 function colorToHex(color) {
     return rgbToHex(color["r"], color["g"], color["b"]);
 }
+function matchName(name) {
+    let names = name.match(/#([0-9\:]+) ?([a-z]*)/);
+    let nodeId = names[1] ? names[1] : null;
+    let type = names[2] ? names[2] : "fill";
+    return { nodeId, type };
+}
 function setText(text, newCharacters) {
     return __awaiter(this, void 0, void 0, function* () {
         let font = text.fontName;
@@ -87,9 +93,8 @@ function updateUI() {
 function updateAll() {
     const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
     nodes.forEach(node => {
-        let names = node.name.split(" ");
-        let nodeId = names[0].substring(1);
-        if (names[1] == "stroke") {
+        let { nodeId, type } = matchName(node.name);
+        if (type == "stroke") {
             setText(node, getStrokesColor(nodeId));
         }
         else {
@@ -116,12 +121,6 @@ figma.ui.onmessage = msg => {
         addTextNearSelected(hexColor.toUpperCase(), name);
     }
 };
-if (selectedNodeExist()) {
-    figma.showUI(__html__);
-    figma.ui.resize(250, 220);
-    updateUI();
-}
-else {
-    updateAll();
-    figma.closePlugin();
-}
+figma.showUI(__html__);
+figma.ui.resize(250, 220);
+updateUI();
