@@ -12,9 +12,8 @@ It's pain to click on object for just a quick check of color code and more pain 
 4. You can **edit text** style but not node name
 5. You can **Click Update all** to update color code when you change element's color
 
-#### Tip & Something you may confuse
+#### Tip
 
-* If you call plugin with out select any element the **plugin will call "update all" without UI**
 * plugin can read color from style
 
 ## Todo
