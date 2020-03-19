@@ -81,10 +81,10 @@ function getColorByType(nodeId, type) {
     }
 }
 function getFillsColor(nodeId) {
-    getColorByType(nodeId, "fills");
+    return getColorByType(nodeId, "fills");
 }
 function getStrokesColor(nodeId) {
-    getColorByType(nodeId, "strokes");
+    return getColorByType(nodeId, "strokes");
 }
 function updateAll() {
     const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");

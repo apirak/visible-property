@@ -80,11 +80,11 @@ function getColorByType(nodeId:string, type:string):string {
 }
 
 function getFillsColor(nodeId:string):string {
-  getColorByType(nodeId, "fills");
+  return getColorByType(nodeId, "fills");
 }
 
 function getStrokesColor(nodeId:string):string {
-  getColorByType(nodeId, "strokes");
+  return getColorByType(nodeId, "strokes");
 }
 
 function updateAll() {
