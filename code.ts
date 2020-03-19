@@ -15,11 +15,11 @@ function firstSelectedNode():RectangleNode {
 function colorNumberToHex(color:number):string {
   var hex = Math.round(color * 255).toString(16);
   return hex.length == 1 ? "0" + hex : hex;
-};
+}
 
 function rgbToHex(r:number, g:number, b:number):string {
   return "#" + colorNumberToHex(r) + colorNumberToHex(g) + colorNumberToHex(b)
-};
+}
 
 function colorToHex(color:any):string{
   return rgbToHex(color["r"], color["g"], color["b"]);
@@ -45,6 +45,24 @@ async function addTextNearSelected(text:string, name:string){
   node.parent.appendChild(textNode);
 }
 
+function getColorByType(nodeId:string, type:string):string {
+  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
+  if(selectedNode) {
+    if(selectedNode[type][0]) {
+      const hexColor:string = colorToHex(selectedNode[type][0]["color"]);
+      return hexColor.toUpperCase();
+    }
+  }
+}
+
+function getFillsColor(nodeId:string):string {
+  return getColorByType(nodeId, "fills");
+}
+
+function getStrokesColor(nodeId:string):string {
+  return getColorByType(nodeId, "strokes");
+}
+
 function updateUI():void {
   let message = {};
 
@@ -67,24 +85,6 @@ function updateUI():void {
   }
   
   figma.ui.postMessage(message);
-}
-
-function getColorByType(nodeId:string, type:string):string {
-  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
-  if(selectedNode) {
-    if(selectedNode[type][0]) {
-      const hexColor:string = colorToHex(selectedNode[type][0]["color"]);
-      return hexColor.toUpperCase();
-    }
-  }
-}
-
-function getFillsColor(nodeId:string):string {
-  return getColorByType(nodeId, "fills");
-}
-
-function getStrokesColor(nodeId:string):string {
-  return getColorByType(nodeId, "strokes");
 }
 
 function updateAll() {

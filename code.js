@@ -22,11 +22,9 @@ function colorNumberToHex(color) {
     var hex = Math.round(color * 255).toString(16);
     return hex.length == 1 ? "0" + hex : hex;
 }
-;
 function rgbToHex(r, g, b) {
     return "#" + colorNumberToHex(r) + colorNumberToHex(g) + colorNumberToHex(b);
 }
-;
 function colorToHex(color) {
     return rgbToHex(color["r"], color["g"], color["b"]);
 }
@@ -51,6 +49,21 @@ function addTextNearSelected(text, name) {
         node.parent.appendChild(textNode);
     });
 }
+function getColorByType(nodeId, type) {
+    let selectedNode = figma.getNodeById(nodeId);
+    if (selectedNode) {
+        if (selectedNode[type][0]) {
+            const hexColor = colorToHex(selectedNode[type][0]["color"]);
+            return hexColor.toUpperCase();
+        }
+    }
+}
+function getFillsColor(nodeId) {
+    return getColorByType(nodeId, "fills");
+}
+function getStrokesColor(nodeId) {
+    return getColorByType(nodeId, "strokes");
+}
 function updateUI() {
     let message = {};
     const countText = propertyText().length;
@@ -70,21 +83,6 @@ function updateUI() {
         message["isSelected"] = false;
     }
     figma.ui.postMessage(message);
-}
-function getColorByType(nodeId, type) {
-    let selectedNode = figma.getNodeById(nodeId);
-    if (selectedNode) {
-        if (selectedNode[type][0]) {
-            const hexColor = colorToHex(selectedNode[type][0]["color"]);
-            return hexColor.toUpperCase();
-        }
-    }
-}
-function getFillsColor(nodeId) {
-    return getColorByType(nodeId, "fills");
-}
-function getStrokesColor(nodeId) {
-    return getColorByType(nodeId, "strokes");
 }
 function updateAll() {
     const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
