@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-function propertyText() {
+function searchVisiblePropertyTextNodes() {
     const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
     return nodes.map(node => node);
 }
@@ -70,9 +70,9 @@ function getFillsColor(nodeId) {
 function getStrokesColor(nodeId) {
     return getColorByType(nodeId, "strokes");
 }
-function updateUI() {
+function prepareValueForUI() {
     let message = {};
-    const countText = propertyText().length;
+    const countText = searchVisiblePropertyTextNodes().length;
     message["countText"] = countText;
     if (selectedNodeExist()) {
         const selectedNode = firstSelectedNode();
@@ -88,7 +88,10 @@ function updateUI() {
     else {
         message["isSelected"] = false;
     }
-    figma.ui.postMessage(message);
+    return message;
+}
+function updateUI() {
+    figma.ui.postMessage(prepareValueForUI());
 }
 function updateAll() {
     const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
@@ -102,6 +105,7 @@ function updateAll() {
         }
     });
 }
+// EVENT HANDLER
 figma.on("selectionchange", () => {
     updateUI();
 });
@@ -121,6 +125,6 @@ figma.ui.onmessage = msg => {
         addTextNearSelected(hexColor.toUpperCase(), name);
     }
 };
-figma.showUI(__html__);
-figma.ui.resize(250, 220);
+// MAIN FUNCTION
+figma.showUI(__html__, { width: 250, height: 220 });
 updateUI();

@@ -1,4 +1,4 @@
-function propertyText():TextNode[] {
+function searchVisiblePropertyTextNodes():TextNode[] {
   const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
   return nodes.map(node => <TextNode> node)
 }
@@ -70,10 +70,10 @@ function getStrokesColor(nodeId:string):string {
   return getColorByType(nodeId, "strokes");
 }
 
-function updateUI():void {
+function prepareValueForUI():any{
   let message = {};
 
-  const countText:number = propertyText().length;
+  const countText:number = searchVisiblePropertyTextNodes().length;
   message["countText"] = countText;
 
   if (selectedNodeExist()) {
@@ -90,8 +90,11 @@ function updateUI():void {
   } else {
     message["isSelected"] = false;
   }
-  
-  figma.ui.postMessage(message);
+  return message;
+}
+
+function updateUI():void {
+  figma.ui.postMessage(prepareValueForUI());
 }
 
 function updateAll() {
@@ -106,6 +109,8 @@ function updateAll() {
     }
   });
 }
+
+// EVENT HANDLER
 
 figma.on("selectionchange", () => { 
   updateUI();
@@ -130,6 +135,7 @@ figma.ui.onmessage = msg => {
   } 
 };
 
-figma.showUI(__html__);
-figma.ui.resize(250, 220);
+// MAIN FUNCTION
+
+figma.showUI(__html__,{width:250, height:220});
 updateUI();
