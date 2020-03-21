@@ -1,0 +1,83 @@
+/* Variables */
+:root {
+  --spacing: 8px;
+  --color-white: #fff;
+  --color-dark: #333;
+  --color-primary: #18a0fb;
+}
+
+body {
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 16px;
+  margin: 16px;
+  font-size: 12px;
+}
+
+H3 {
+  text-transform: uppercase;
+  font-size: 10px;
+  color: #BDBDBD;
+  font-weight: normal;
+}
+
+hr {
+  margin: 16px 0;
+  border-top: 1px solid #cccccc;
+  border-bottom: none;
+  outline: none;
+}
+
+.property {
+  height: 32px;
+  margin: auto;
+  overflow: auto;
+}
+
+.label {
+  float: left;
+  width: 120px;
+  height: 24px;
+  margin: 4px 0px 0px 0px;
+}
+
+.value {
+  float: left;
+  width: 120px;
+  height: 24px;
+  margin: 4px 0px 0px 8px;
+}
+
+.button {
+  float: right;
+  color: #2D9CDB;
+  text-decoration: none;
+  font-weight: bold;
+  height: 24px;
+  margin: 4px 0px 0px 0px;
+}
+
+.color {
+  float: left;
+  width: 24px;
+  height: 24px;
+  background: #FFFFFF;
+  border-radius: 12px;
+}
+
+.fill {
+  background: #C4C4C4;
+}      
+
+.stroke {
+  border: 4px solid #abc;
+  width: 24px;
+  height: 24px;        
+}
+
+/* Global styles */
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
