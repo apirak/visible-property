@@ -76,7 +76,8 @@ function getColorByType(nodeId:string, type:string):string {
   let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
   if(selectedNode && selectedNode[type][0]) {
       return colorToHex(selectedNode[type][0]["color"]);
-    }
+  } else {
+    return " ";
   }
 }
 
