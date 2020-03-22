@@ -31,13 +31,29 @@ function colorToHex(color:any):string{
   return rgbToHex(color["r"], color["g"], color["b"]).toUpperCase();
 }
 
-function isSolidPaint(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
+function isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
   if (fills as Paint[] != undefined){
     if ((fills as Paint[]).length != 0){ 
       return (fills as SolidPaint[])[0].color != undefined;
     }
   }
   return false;
+}
+
+function getPropertyFromNode(node:RectangleNode, propertyName:string) :string {
+  let fills = node.fills;
+  let strokes = node.strokes;
+  let property:string;
+
+  if (propertyName == "fill" && isSolidPaints(fills)){
+    return colorToHex(fills[0].color).toUpperCase();
+  };
+
+  if (propertyName == "stroke" && isSolidPaints(strokes)) {
+    return colorToHex(strokes[0].color).toUpperCase();
+  };
+
+  return "";
 }
 
 function prepareValueForUI():any{
@@ -47,21 +63,12 @@ function prepareValueForUI():any{
   message["countText"] = countText;
 
   if (selectedNodeExist()) {
-    const selectedNode = selectedFirstNode(); 
-  
     message["isSelected"] = true;
 
-    let fills = selectedFirstNode().fills
-    let strokes = selectedFirstNode().strokes
-
     // [TODO] consider fills and stroke may have more than one
-    if (isSolidPaint(fills)){
-      message["fill"] = colorToHex(fills[0].color).toUpperCase();
-    };
+    message["fill"] = getPropertyFromNode(selectedFirstNode(), "fill");
+    message["stroke"] = getPropertyFromNode(selectedFirstNode(), "stroke");
 
-    if (isSolidPaint(strokes)) {
-      message["stroke"] = colorToHex(strokes[0].color).toUpperCase();
-    }
   } else {
     message["isSelected"] = false;
   }
@@ -72,21 +79,23 @@ function updateUI():void {
   postMessageToUI({ type: WorkerActionTypes.UPDATE_UI_PROPERTY, payload: prepareValueForUI() });
 }
 
-function getColorByType(nodeId:string, type:string):string {
-  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
-  if(selectedNode && selectedNode[type][0]) {
-      return colorToHex(selectedNode[type][0]["color"]);
-  } else {
-    return " ";
-  }
-}
+// function getColorByType(nodeId:string, type:string):string {
+//   let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
+//   if(selectedNode && selectedNode[type][0]) {
+//       return colorToHex(selectedNode[type][0]["color"]);
+//   } else {
+//     return " ";
+//   }
+// }
 
 function getFillsColor(nodeId:string):string {
-  return getColorByType(nodeId, "fills");
+  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
+  return getPropertyFromNode(selectedNode, "fill");
 }
 
 function getStrokesColor(nodeId:string):string {
-  return getColorByType(nodeId, "strokes");
+  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
+  return getPropertyFromNode(selectedNode, "stroke");
 }
 
 async function setText(text:TextNode, newCharacters:string) {
@@ -136,15 +145,15 @@ async function addTextNearSelected(text:string, name:string){
 }
 
 function addFillTextProperty() {
-  const hexColor:string = colorToHex(selectedFirstNode().fills[0].color)
+  const hexColor:string = getPropertyFromNode(selectedFirstNode(), "fill");
   const name:string = "#"+selectedFirstNode().id + " fill";
-  addTextNearSelected(hexColor.toUpperCase(), name);
+  addTextNearSelected(hexColor, name);
 }
 
 function addStrokeTextProperty() {
-  const hexColor:string = colorToHex(selectedFirstNode().strokes[0]["color"]);
+  const hexColor:string = getPropertyFromNode(selectedFirstNode(), "stroke");
   const name:string = "#"+selectedFirstNode().id + " stroke";
-  addTextNearSelected(hexColor.toUpperCase(), name);
+  addTextNearSelected(hexColor, name);
 }
 
 // Listen to messages received from the plugin UI (src/ui/ui.ts)
