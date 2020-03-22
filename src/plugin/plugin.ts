@@ -79,15 +79,6 @@ function updateUI():void {
   postMessageToUI({ type: WorkerActionTypes.UPDATE_UI_PROPERTY, payload: prepareValueForUI() });
 }
 
-// function getColorByType(nodeId:string, type:string):string {
-//   let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
-//   if(selectedNode && selectedNode[type][0]) {
-//       return colorToHex(selectedNode[type][0]["color"]);
-//   } else {
-//     return " ";
-//   }
-// }
-
 function getFillsColor(nodeId:string):string {
   let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
   return getPropertyFromNode(selectedNode, "fill");
@@ -141,7 +132,9 @@ async function addTextNearSelected(text:string, name:string){
   textNode.y = node.y + node.height + 20;
   textNode.characters = text;
   textNode.name = name;
-  node.parent.appendChild(textNode);
+  if(node.parent){
+    node.parent.appendChild(textNode);
+  }
 }
 
 function addFillTextProperty() {
