@@ -2,7 +2,7 @@
 
 It's pain to click on object for just a quick check of color code and more pain when we update it. Visual Property Plugin build to solve this problems.
 
-![Screenshot](docs/cover_art.png)
+![Screenshot](docs/cover_art_2.png)
 
 ## How to use this plugin
 
@@ -12,9 +12,9 @@ It's pain to click on object for just a quick check of color code and more pain 
 4. You can **edit text** style but not node name
 5. You can **Click Update all** to update color code when you change element's color
 
-#### Tip
+#### Video Tutorial on Youtube
 
-* plugin can read color from style
+[![Video Tutorial](https://img.youtube.com/vi/PTxIRXrCGlE/0.jpg)](https://www.youtube.com/watch?v=PTxIRXrCGlE)
 
 ## Contribute
 
