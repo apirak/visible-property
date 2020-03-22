@@ -1,15 +1,15 @@
 // Add and Update Text Node
 import { selectedFirstNode } from './property';
+import { NodeName } from '../types';
 
-export function matchName(name:string):{id:string, type:string} {
+export function matchName(name:string): NodeName {
   let names = name.match(/#([0-9\:]+) ?([a-z]*)/);
+  let nodeName:NodeName = {id:"", type:""};
   if (names){
-    let nodeId = names[1] ? names[1] : "";
-    let nodeType = names[2] ? names[2] : "fill";
-    return {id:nodeId, type:nodeType};
-  } else {
-    return {id:"", type:""};
+    nodeName.id = names[1] ? names[1] : "";
+    nodeName.type = names[2] ? names[2] : "fill";
   }
+  return nodeName;
 }
 
 export async function setText(text:TextNode, newCharacters:string) {

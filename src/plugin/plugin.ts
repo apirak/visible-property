@@ -1,7 +1,7 @@
-import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction } from '../types';
-import { colorNumberToHex, rgbToHex, colorToHex } from './color';
+import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, NodeName } from '../types';
+import { colorNumberToHex, rgbToHex, colorToHex } from './colorUtility';
 import { getPropertyFromNode, isSolidPaints, getFillsColor, getStrokesColor, prepareValueForUI, selectedFirstNode } from './property';
-import { matchName, setText, addTextNearSelected } from './text';
+import { matchName, setText, addTextNearSelected } from './textUtility';
 
 function postMessageToUI({ type, payload }: WorkerAction): void {
   figma.ui.postMessage({ type, payload });
@@ -15,26 +15,20 @@ function updateAllTextProperty() {
   const nodes = figma.currentPage.findAll(node => node.type === "TEXT" && node.name.charAt(0) === "#");
   
   nodes.forEach(node => {
-    let {id, type} = matchName(node.name);
-    if (type == "stroke") {
-      setText(node as TextNode, getStrokesColor(id));
+    let nodeName:NodeName = matchName(node.name);
+    if (nodeName.type == "stroke") {
+      setText(node as TextNode, getStrokesColor(nodeName.id));
     } else {
-      setText(node as TextNode, getFillsColor(id));
+      setText(node as TextNode, getFillsColor(nodeName.id));
     }
   });
 
   figma.notify('Updated 👍');
 }
 
-function addFillTextProperty() {
-  const hexColor:string = getPropertyFromNode(selectedFirstNode(), "fill");
-  const name:string = "#"+selectedFirstNode().id + " fill";
-  addTextNearSelected(hexColor, name);
-}
-
-function addStrokeTextProperty() {
-  const hexColor:string = getPropertyFromNode(selectedFirstNode(), "stroke");
-  const name:string = "#"+selectedFirstNode().id + " stroke";
+function addTextProperty(type:string) {
+  const hexColor:string = getPropertyFromNode(selectedFirstNode(), type);
+  const name:string = "#"+selectedFirstNode().id + " " + type;
   addTextNearSelected(hexColor, name);
 }
 
@@ -48,10 +42,10 @@ figma.ui.onmessage = function({ type, payload }: UIAction): void {
       updateAllTextProperty();
       break;
     case UIActionTypes.ADD_FILL:
-      addFillTextProperty();
+      addTextProperty("fill");
       break;
     case UIActionTypes.ADD_STROKE:
-      addStrokeTextProperty();
+      addTextProperty("stroke");
       break;
   }
 };

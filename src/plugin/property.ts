@@ -1,5 +1,5 @@
 // Get property from Node
-import { colorNumberToHex, rgbToHex, colorToHex} from './color';
+import { colorNumberToHex, rgbToHex, colorToHex} from './colorUtility';
 
 export function isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
   if (fills as Paint[] != undefined){
