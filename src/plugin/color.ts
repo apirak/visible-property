@@ -6,8 +6,6 @@ export const colorNumberToHex = (color:number):string => {
 }
 
 export function rgbToHex(r:number, g:number, b:number):string {
-  console.log("r:"+r+" g:"+g+" b:"+b);
-  console.log("r:"+colorNumberToHex(r)+" g:"+colorNumberToHex(g)+" b:"+colorNumberToHex(b));  
   return "#" + colorNumberToHex(r) + colorNumberToHex(g) + colorNumberToHex(b)
 }
 
