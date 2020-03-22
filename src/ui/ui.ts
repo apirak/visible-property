@@ -1,4 +1,4 @@
-import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction } from '../types';
+import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, UIInformation, NodeInfo } from '../types';
 
 import './ui.css';
 
@@ -30,28 +30,59 @@ function updatePropertyStyle(type:string, circleColor:string, value:string, valu
   if (elementAdd) {
     elementAdd.style.display = addDisplay;
   }
+
+  let elementDescription = getElementById("description_value")
+  if (elementDescription) {
+    elementDescription.innerHTML = value;
+    elementDescription.style.color = valueColor;
+  }
+
+  let elementDescriptionAdd = getElementById("description_add")
+  if (elementDescriptionAdd) {
+    elementDescriptionAdd.style.display = addDisplay;
+  }
 }
 
 function updateUI(payload:any):void{
-  let message = payload;
+  let uiInformation = <UIInformation> payload;
   const myElement:HTMLElement | null = document.getElementById("visibleProperty");
   if (myElement) {
-    myElement.innerHTML = message.countText;
+    myElement.innerHTML = String(uiInformation.countPropertyTexts);
   }
 
   const normalColor = "#000000";
   const disableColor = "#AAAAAA";
 
-  if (message.fill) {
-    updatePropertyStyle("fill", message.fill, message.fill, normalColor, "block")
-  } else {
-    updatePropertyStyle("fill", disableColor, "Fill is Empty", disableColor, "none")
-  }
+  if (uiInformation.selectedNode) {
+    if (uiInformation.selectedNode.fillColor) {
+      updatePropertyStyle("fill", 
+        uiInformation.selectedNode.fillColor, 
+        uiInformation.selectedNode.fillColor, 
+        normalColor, "block");
+    } else {
+      updatePropertyStyle("fill", disableColor, "Fill is Empty", disableColor, "none")
+    }
 
-  if (message.stroke) {
-    updatePropertyStyle("stroke", message.stroke, message.stroke, "#000000", "block")
-  } else {
-    updatePropertyStyle("stroke", disableColor, "Stroke is Empty", disableColor, "none")
+    if (uiInformation.selectedNode.strokeColor) {
+      updatePropertyStyle("stroke", 
+        uiInformation.selectedNode.strokeColor, 
+        uiInformation.selectedNode.strokeColor, 
+        normalColor, "block");
+    } else {
+      updatePropertyStyle("stroke", disableColor, "Stroke is Empty", disableColor, "none")
+    }
+
+    if (uiInformation.selectedNode.description) {
+      updatePropertyStyle("description", 
+        disableColor, 
+        uiInformation.selectedNode.description, 
+        normalColor, "block")
+    } else {
+      updatePropertyStyle("description", 
+        disableColor, 
+        "Not a component", 
+        disableColor, "none")
+    }
   }
 }
 
@@ -94,7 +125,10 @@ function listenersToClickEvent(): void {
         break;
       case 'stroke_1_add':
         postMessageToPlugin({ type: UIActionTypes.ADD_STROKE});
-        break;          
+        break; 
+      case 'description_add':
+        postMessageToPlugin({ type: UIActionTypes.ADD_DESCRIPTION});
+        break;                  
     }
   });
 }

@@ -5,6 +5,7 @@ export enum UIActionTypes {
   UPDATE_ALL = 'UPDATE_ALL',
   ADD_FILL = 'ADD_FILL',
   ADD_STROKE = 'ADD_STROKE',
+  ADD_DESCRIPTION = 'ADD_DESCRIPTION',
 }
 
 export interface UIAction {
@@ -28,6 +29,18 @@ export interface WorkerAction {
 }
 
 export interface NodeName {
-  id: string,
+  id: string;
   type?: string;
+}
+
+export interface UIInformation {
+  countPropertyTexts: number;
+  isSelected: boolean;
+  selectedNode?: NodeInfo;
+}
+
+export interface NodeInfo {
+  fillColor?: string;
+  strokeColor?: string;
+  description?: string;
 }

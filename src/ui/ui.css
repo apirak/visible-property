@@ -46,7 +46,14 @@ hr {
   float: left;
   width: 120px;
   height: 24px;
-  margin: 4px 0px 0px 8px;
+  margin: 4px 0px 0px 0px;
+}
+
+.description {
+  width: 160px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .button {
@@ -64,6 +71,7 @@ hr {
   height: 24px;
   background: #FFFFFF;
   border-radius: 12px;
+  margin: 0px 8px 0px 0px;
 }
 
 .fill {

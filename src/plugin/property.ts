@@ -1,5 +1,6 @@
 // Get property from Node
-import { colorNumberToHex, rgbToHex, colorToHex} from './colorUtility';
+import { colorToHex } from './colorUtility';
+import { UIInformation, NodeInfo } from '../types';
 
 export function isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fills is SolidPaint[] {
   if (fills as Paint[] != undefined){
@@ -10,17 +11,7 @@ export function isSolidPaints(fills: readonly Paint[] | PluginAPI['mixed']): fil
   return false;
 }
 
-export function getFillsColor(nodeId:string):string {
-  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
-  return getPropertyFromNode(selectedNode, "fill");
-}
-
-export function getStrokesColor(nodeId:string):string {
-  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
-  return getPropertyFromNode(selectedNode, "stroke");
-}
-
-export function getPropertyFromNode(node:RectangleNode, propertyName:string) :string {
+export function getPropertyFromNode(node:RectangleNode | ComponentNode , propertyName:string) :string {
   let fills = node.fills;
   let strokes = node.strokes;
   let property:string;
@@ -33,12 +24,42 @@ export function getPropertyFromNode(node:RectangleNode, propertyName:string) :st
     return colorToHex(strokes[0].color).toUpperCase();
   };
 
+  if (propertyName == "description" && node.type == "COMPONENT"){
+    return node.description;
+  }
+
   return "";
 }
 
-export function selectedFirstNode():RectangleNode {
-  // [TODO] Selected may not Rectangle Node
-  return <RectangleNode> figma.currentPage.selection[0];
+export function getColor(nodeId:string, property:string):string {
+  let selectedNode = <RectangleNode> figma.getNodeById(nodeId); 
+  return getPropertyFromNode(selectedNode, property);
+}
+
+export function getDescription(nodeId:string, property:string):string {
+  let testSelectedNode = figma.getNodeById(nodeId);
+  if (testSelectedNode && testSelectedNode.type == "COMPONENT") {
+    let selectedNode = <ComponentNode> figma.getNodeById(nodeId); 
+    return getPropertyFromNode(selectedNode, property);
+  } else {
+    return "";
+  }
+}
+
+export function selectedFirstNode():RectangleNode | ComponentNode {
+  let node = figma.currentPage.selection[0];
+  
+  switch (node.type) {
+    case "COMPONENT":
+      return <ComponentNode> node;
+      break;
+    case "RECTANGLE":
+      return <RectangleNode> node;
+      break;
+    default:
+      return <RectangleNode> figma.currentPage.selection[0];
+      break;
+  }
 }
 
 export function selectedNodeExist():boolean {
@@ -50,21 +71,24 @@ export function searchVisiblePropertyTextNodes():TextNode[] {
   return nodes.map(node => <TextNode> node)
 }
 
-export function prepareValueForUI():any{
-  let message:any = {};
-
+export function prepareValueForUI():UIInformation{
   const countText:number = searchVisiblePropertyTextNodes().length;
-  message["countText"] = countText;
+
+  let uiInformation:UIInformation = {countPropertyTexts: countText, isSelected: false};
 
   if (selectedNodeExist()) {
-    message["isSelected"] = true;
+    uiInformation.isSelected = true;
 
-    // [TODO] consider fills and stroke may have more than one
-    message["fill"] = getPropertyFromNode(selectedFirstNode(), "fill");
-    message["stroke"] = getPropertyFromNode(selectedFirstNode(), "stroke");
+    let nodeInfo:NodeInfo = {
+      fillColor: getPropertyFromNode(selectedFirstNode(), "fill"),
+      strokeColor: getPropertyFromNode(selectedFirstNode(), "stroke"),
+      description: getPropertyFromNode(selectedFirstNode(), "description"),
+    }
+    
+    uiInformation.selectedNode = nodeInfo;
 
   } else {
-    message["isSelected"] = false;
+    uiInformation.isSelected = false;
   }
-  return message;
+  return uiInformation;
 }

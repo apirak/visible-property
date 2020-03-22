@@ -1,6 +1,5 @@
 import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, NodeName } from '../types';
-import { colorNumberToHex, rgbToHex, colorToHex } from './colorUtility';
-import { getPropertyFromNode, isSolidPaints, getFillsColor, getStrokesColor, prepareValueForUI, selectedFirstNode } from './property';
+import { getPropertyFromNode, getColor, prepareValueForUI, selectedFirstNode, getDescription } from './property';
 import { matchName, setText, addTextNearSelected } from './textUtility';
 
 function postMessageToUI({ type, payload }: WorkerAction): void {
@@ -16,20 +15,23 @@ function updateAllTextProperty() {
   
   nodes.forEach(node => {
     let nodeName:NodeName = matchName(node.name);
-    if (nodeName.type == "stroke") {
-      setText(node as TextNode, getStrokesColor(nodeName.id));
-    } else {
-      setText(node as TextNode, getFillsColor(nodeName.id));
+
+    if (nodeName.type){
+      if (nodeName.type == "description") {
+        setText(node as TextNode, getDescription(nodeName.id, nodeName.type));
+      } else {
+        setText(node as TextNode, getColor(nodeName.id, nodeName.type));
+      }
     }
   });
 
   figma.notify('Updated 👍');
 }
 
-function addTextProperty(type:string) {
-  const hexColor:string = getPropertyFromNode(selectedFirstNode(), type);
-  const name:string = "#"+selectedFirstNode().id + " " + type;
-  addTextNearSelected(hexColor, name);
+function addTextProperty(property:string) {
+  const textValue:string = getPropertyFromNode(selectedFirstNode(), property);
+  const textName:string = "#"+selectedFirstNode().id + " " + property;
+  addTextNearSelected(textValue, textName);
 }
 
 // Listen to messages received from the plugin UI (src/ui/ui.ts)
@@ -47,6 +49,9 @@ figma.ui.onmessage = function({ type, payload }: UIAction): void {
     case UIActionTypes.ADD_STROKE:
       addTextProperty("stroke");
       break;
+    case UIActionTypes.ADD_DESCRIPTION:
+      addTextProperty("description");
+      break;
   }
 };
 
@@ -54,5 +59,5 @@ figma.on("selectionchange", () => {
   updateUI();
 })
 
-figma.showUI(__html__, { width: 250, height: 220 });
+figma.showUI(__html__, { width: 250, height: 285 });
 updateUI();
