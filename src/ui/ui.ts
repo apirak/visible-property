@@ -49,41 +49,40 @@ function updateUI(payload:any):void{
   if (myElement) {
     myElement.innerHTML = String(uiInformation.countPropertyTexts);
   }
-
+  
   const normalColor = "#000000";
   const disableColor = "#AAAAAA";
 
-  if (uiInformation.selectedNode) {
-    if (uiInformation.selectedNode.fillColor) {
-      updatePropertyStyle("fill", 
-        uiInformation.selectedNode.fillColor, 
-        uiInformation.selectedNode.fillColor, 
-        normalColor, "block");
-    } else {
-      updatePropertyStyle("fill", disableColor, "Fill is Empty", disableColor, "none")
-    }
-
-    if (uiInformation.selectedNode.strokeColor) {
-      updatePropertyStyle("stroke", 
-        uiInformation.selectedNode.strokeColor, 
-        uiInformation.selectedNode.strokeColor, 
-        normalColor, "block");
-    } else {
-      updatePropertyStyle("stroke", disableColor, "Stroke is Empty", disableColor, "none")
-    }
-
-    if (uiInformation.selectedNode.description) {
-      updatePropertyStyle("description", 
-        disableColor, 
-        uiInformation.selectedNode.description, 
-        normalColor, "block")
-    } else {
-      updatePropertyStyle("description", 
-        disableColor, 
-        "Not a component", 
-        disableColor, "none")
-    }
+  if (uiInformation.isSelected && uiInformation.selectedNode && uiInformation.selectedNode.fillColor) {
+    updatePropertyStyle("fill", 
+      uiInformation.selectedNode.fillColor, 
+      uiInformation.selectedNode.fillColor, 
+      normalColor, "block");
+  } else {
+    updatePropertyStyle("fill", disableColor, "Fill is Empty", disableColor, "none")
   }
+
+  if (uiInformation.isSelected && uiInformation.selectedNode && uiInformation.selectedNode.strokeColor) {
+    updatePropertyStyle("stroke", 
+      uiInformation.selectedNode.strokeColor, 
+      uiInformation.selectedNode.strokeColor, 
+      normalColor, "block");
+  } else {
+    updatePropertyStyle("stroke", disableColor, "Stroke is Empty", disableColor, "none")
+  }
+
+  if (uiInformation.isSelected && uiInformation.selectedNode && uiInformation.selectedNode.description) {
+    updatePropertyStyle("description", 
+      disableColor, 
+      uiInformation.selectedNode.description, 
+      normalColor, "block")
+  } else {
+    updatePropertyStyle("description", 
+      disableColor, 
+      "Not a component", 
+      disableColor, "none")
+  }
+  
 }
 
 function postMessageToPlugin({ type, payload }: UIAction): void {

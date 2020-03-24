@@ -1,6 +1,6 @@
 # # Visual Property
 
-It's pain to click on object for just a quick check of color code and more pain when we update it. Visual Property Plugin build to solve this problems.
+You can create property-text from any element and update it all when you update element.
 
 ![Screenshot](docs/cover_art_2.png)
 

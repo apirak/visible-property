@@ -1,13 +1,14 @@
 import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, NodeName } from '../types';
-import { getPropertyFromNode, getColor, prepareValueForUI, selectedFirstNode, getDescription } from './property';
+import { prepareValueForUI, selectedFirstNode } from './property';
 import { matchName, setText, addTextNearSelected } from './textUtility';
+import { BasicNode, nodeFactory } from './basicNode';
 
 function postMessageToUI({ type, payload }: WorkerAction): void {
   figma.ui.postMessage({ type, payload });
 }
 
-function updateUI():void {
-  postMessageToUI({ type: WorkerActionTypes.UPDATE_UI_PROPERTY, payload: prepareValueForUI() });
+export function getDescription(nodeId:string, property:string):string {
+  return nodeFactory(nodeId).getDescription();
 }
 
 function updateAllTextProperty() {
@@ -16,12 +17,16 @@ function updateAllTextProperty() {
   nodes.forEach(node => {
     let nodeName:NodeName = matchName(node.name);
 
-    if (nodeName.type){
-      if (nodeName.type == "description") {
-        setText(node as TextNode, getDescription(nodeName.id, nodeName.type));
-      } else {
-        setText(node as TextNode, getColor(nodeName.id, nodeName.type));
-      }
+    switch(nodeName.type) {
+      case "fill":
+        setText(node as TextNode, nodeFactory(nodeName.id).getFill());
+        break;
+      case "stroke":
+        setText(node as TextNode, nodeFactory(nodeName.id).getStroke());
+        break;
+      case "description": 
+        setText(node as TextNode, nodeFactory(nodeName.id).getDescription());
+        break;
     }
   });
 
@@ -29,8 +34,22 @@ function updateAllTextProperty() {
 }
 
 function addTextProperty(property:string) {
-  const textValue:string = getPropertyFromNode(selectedFirstNode(), property);
-  const textName:string = "#"+selectedFirstNode().id + " " + property;
+  let selectedNode:BasicNode = selectedFirstNode();
+  let textValue:string = "";
+
+  switch(property) {
+    case "fill":
+      textValue = selectedNode.getFill();
+      break;
+    case "stroke":
+      textValue = selectedNode.getStroke();
+      break;
+    case "description":
+      textValue = selectedNode.getDescription();
+      break;
+  }
+
+  const textName:string = "#"+selectedNode.getID() + " " + property;
   addTextNearSelected(textValue, textName);
 }
 
@@ -54,6 +73,10 @@ figma.ui.onmessage = function({ type, payload }: UIAction): void {
       break;
   }
 };
+
+function updateUI():void {
+  postMessageToUI({ type: WorkerActionTypes.UPDATE_UI_PROPERTY, payload: prepareValueForUI() });
+}
 
 figma.on("selectionchange", () => { 
   updateUI();
