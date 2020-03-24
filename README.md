@@ -2,7 +2,7 @@
 
 You can create property-text from any element and update it all when you update element.
 
-![Screenshot](docs/cover_art_2.png)
+![Screenshot](docs/cover_art.png)
 
 ## How to use this plugin
 
