@@ -1,6 +1,7 @@
 // Add and Update Text Node
-import { selectedFirstNode } from './property';
+import { selectedFirstNode} from './property';
 import { NodeName } from '../types';
+import { Rectangle } from './basicNode';
 
 export function matchName(name:string): NodeName {
   let names = name.match(/#([0-9\:]+) ?([a-z]*)/);
@@ -19,17 +20,17 @@ export async function setText(text:TextNode, newCharacters:string) {
 }
 
 export async function addTextNearSelected(text:string, name:string){
-  let node = selectedFirstNode();
+  let elementNode = <Rectangle> selectedFirstNode();
 
   await figma.loadFontAsync({family:"Roboto", style: "Regular"});
   const textNode = figma.createText();
   textNode.fontSize = 12;
   textNode.fontName = {family:"Roboto", style: "Regular"}
-  textNode.x = node.x;
-  textNode.y = node.y + node.height + 20;
+  textNode.x = elementNode.node.x;
+  textNode.y = elementNode.node.y + elementNode.node.height + 20;
   textNode.characters = text;
   textNode.name = name;
-  if(node.parent){
-    node.parent.appendChild(textNode);
+  if(elementNode.node.parent){
+    elementNode.node.parent.appendChild(textNode);
   }
 }
