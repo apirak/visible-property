@@ -6,6 +6,8 @@ export interface BasicNode {
   getFill():string;
   getStroke():string;
   getDescription():string;
+  getWidth():number;
+  getHeight():number;
 }
 
 export class BasicNode implements BasicNode{
@@ -46,6 +48,22 @@ export class BasicNode implements BasicNode{
 
   getDescription():string {
     return "";
+  }
+
+  getWidth():number{
+    if(this.node.width != undefined){
+      return this.node.width;
+    } else {;
+      return 0;
+    }
+  }
+
+  getHeight():number{
+    if(this.node.height != undefined){
+      return this.node.height;
+    } else {
+      return 0;
+    }
   }
 }
 

@@ -95,9 +95,6 @@ function listenToPluginMessages(): void {
     const pluginMessage = event.data.pluginMessage as WorkerAction;
     const { type, payload } = pluginMessage;
     switch (type) {
-      case WorkerActionTypes.CREATE_RECTANGLE_NOTIFY:
-        payload && alert(payload);
-        break;
       case WorkerActionTypes.UPDATE_SELECTED_PROPERTY:
         payload && alert(payload);
         break;

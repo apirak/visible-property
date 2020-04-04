@@ -1,16 +1,31 @@
+
+<!-- <%= require('./Width.svg') %> -->
+
 <main class="container">
-  <h3>Fills</h3>
   <div class="property">
     <div id="fill_1_color" class="color fill">&nbsp;</div>
+    <div id="fill_1_title" class="title">Fill</div>
     <div id="fill_1_value" class="value">No fill</div>
     <a   id="fill_1_add" class="button" href="#">Add</a>
   </div>
-  <h3>Stroke</h3>
   <div class="property">
     <div id="stroke_1_color" class="color stroke">&nbsp;</div>
+    <div id="stroke_1_title" class="title">Stroke</div>
     <div id="stroke_1_value" class="value">No stroke</div>
     <a   id="stroke_1_add" class="button" href="#">Add</a>
   </div> 
+  <div class="property">
+    <div id="fill_1_color" class="size"><img src="<%= require('./Height.svg').default %>" /></div>
+    <div id="fill_1_title" class="title">Width</div>
+    <div id="fill_1_value" class="value">No fill</div>
+    <a   id="fill_1_add" class="button" href="#">Add</a>
+  </div>
+  <div class="property">
+    <div id="stroke_1_color" class="size"><img src="<%= require('./Width.svg').default %>" /></div>
+    <div id="stroke_1_title" class="title">Height</div>
+    <div id="stroke_1_value" class="value">No stroke</div>
+    <a   id="stroke_1_add" class="button" href="#">Add</a>
+  </div>   
   <h3>Component description</h3>
   <div class="property">
     <div id="description_value" class="value description">Not a component</div>
