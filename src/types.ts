@@ -44,4 +44,6 @@ export interface NodeInfo {
   fillColor?: string;
   strokeColor?: string;
   description?: string;
+  width: number;
+  height: number;
 }
