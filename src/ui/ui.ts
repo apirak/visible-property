@@ -75,7 +75,7 @@ function updateStyle(type:string, uiInformation:UIInformation) :void {
         elementColor.style.borderColor = fillDisableColor;
         elementColor.style.background = fillDisableColor;
         elementValue.style.color = disableColor;
-        elementValue.innerHTML = "Empty "+type;
+        elementValue.innerHTML = "Empty";
         elementAdd.style.display = "none";
       }
     } else {
@@ -98,8 +98,8 @@ function updateUI(payload:any):void{
   updateStyle("fill", payload);
   updateStyle("stroke", payload);
   updateDescription(payload);
-  updateSize("width", payload);
   updateSize("height", payload);
+  updateSize("width", payload);
 }
 
 function postMessageToPlugin({ type, payload }: UIAction): void {
@@ -139,6 +139,12 @@ function listenersToClickEvent(): void {
       case 'stroke_1_add':
         postMessageToPlugin({ type: UIActionTypes.ADD_STROKE});
         break; 
+      case 'height_add':
+        postMessageToPlugin({ type: UIActionTypes.ADD_HEIGHT});
+        break;                 
+      case 'width_add':
+        postMessageToPlugin({ type: UIActionTypes.ADD_WIDTH});
+        break;  
       case 'description_add':
         postMessageToPlugin({ type: UIActionTypes.ADD_DESCRIPTION});
         break;                  

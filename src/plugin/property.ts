@@ -1,5 +1,4 @@
 // Get property from Node
-import { colorToHex } from './colorUtility';
 import { UIInformation, NodeInfo } from '../types';
 import { BasicNode, Rectangle, Component, nodeFactory} from './basicNode';
 

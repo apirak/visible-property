@@ -52,8 +52,12 @@ hr {
 .title {
   float: left;
   width: 48px;
+  font-size: 10px;
+  font-weight: bold;
+  color: #BDBDBD;  
   height: 24px;
   margin: 4px 0px 0px 0px;
+  text-transform: uppercase;
 }
 
 .description {

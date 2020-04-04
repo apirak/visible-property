@@ -1,7 +1,9 @@
 import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, NodeName } from '../types';
 import { prepareValueForUI, selectedFirstNode } from './property';
 import { matchName, setText, addTextNearSelected } from './textUtility';
-import { BasicNode, nodeFactory } from './basicNode';
+import { addLineNearSelected } from './lineUtility';
+import { BasicNode, nodeFactory, Rectangle } from './basicNode';
+
 
 function postMessageToUI({ type, payload }: WorkerAction): void {
   figma.ui.postMessage({ type, payload });
@@ -53,6 +55,25 @@ function addTextProperty(property:string) {
   addTextNearSelected(textValue, textName);
 }
 
+function addScaleProperty(property:string) {
+  let selectedNode:BasicNode = selectedFirstNode();
+  let textValue:string = "";
+  let long:number = 1;
+
+  switch(property) {
+    case "height":
+      textValue = String(selectedNode.getWidth());
+      long = selectedNode.getHeight();
+      break;
+    case "width":
+      textValue = String(selectedNode.getHeight());
+      long = selectedNode.getWidth();
+      break;
+  }
+  console.log("long: "+long);
+  addLineNearSelected(property);
+}
+
 // Listen to messages received from the plugin UI (src/ui/ui.ts)
 figma.ui.onmessage = function({ type, payload }: UIAction): void {
   switch (type) {
@@ -71,6 +92,12 @@ figma.ui.onmessage = function({ type, payload }: UIAction): void {
     case UIActionTypes.ADD_DESCRIPTION:
       addTextProperty("description");
       break;
+    case UIActionTypes.ADD_HEIGHT:
+      addScaleProperty("height");
+      break;           
+    case UIActionTypes.ADD_WIDTH:
+      addScaleProperty("width");
+      break;      
   }
 };
 
