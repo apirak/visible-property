@@ -39,7 +39,7 @@ function addTextProperty(property:string) {
 
   switch(property) {
     case "fill":
-      textValue = selectedNode.getFill();
+      textValue = selectedNode.getFill()
       break;
     case "stroke":
       textValue = selectedNode.getStroke();

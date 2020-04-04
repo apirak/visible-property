@@ -4,6 +4,7 @@ import './ui.css';
 
 const normalColor = "#000000";
 const disableColor = "#AAAAAA";
+const fillDisableColor = "#F0F0F0";
 
 function getElementById(id:string):HTMLElement | undefined {
   let element:HTMLElement | null = document.getElementById(id);
@@ -71,8 +72,8 @@ function updateStyle(type:string, uiInformation:UIInformation) :void {
         elementValue.innerHTML = String(value);
         elementAdd.style.display = "block";
       } else {
-        elementColor.style.borderColor = disableColor;
-        elementColor.style.background = disableColor;
+        elementColor.style.borderColor = fillDisableColor;
+        elementColor.style.background = fillDisableColor;
         elementValue.style.color = disableColor;
         elementValue.innerHTML = "Empty "+type;
         elementAdd.style.display = "none";
