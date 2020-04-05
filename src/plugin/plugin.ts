@@ -2,7 +2,7 @@ import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, NodeName } fr
 import { prepareValueForUI, selectedFirstNode } from './property';
 import { matchName, setText, addTextNearSelected } from './textUtility';
 import { addLineNearSelected } from './lineUtility';
-import { BasicNode, nodeFactory, Rectangle } from './basicNode';
+import { BasicNode, nodeFactory } from './basicNode';
 
 
 function postMessageToUI({ type, payload }: WorkerAction): void {
