@@ -11,28 +11,41 @@ body {
   font-style: normal;
   font-weight: normal;
   line-height: 16px;
-  margin: 16px;
+  margin: 0px;
   font-size: 12px;
+}
+
+.container {
+  margin: 16px 16px 16px 16px
+}
+
+.container-top {
+  margin-bottom: 0px;
 }
 
 H3 {
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: 11px;
   color: #BDBDBD;
-  font-weight: normal;
+  font-weight: bold;
+  margin: 7px 0px 3px 0px;
 }
 
 hr {
   margin: 16px 0;
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid #E5E5E5;
   border-bottom: none;
   outline: none;
 }
 
 .property {
-  height: 32px;
+  height: 37px;
   margin: auto;
   overflow: auto;
+}
+
+.property-description {
+  height: 25px;
 }
 
 .label {
@@ -44,19 +57,20 @@ hr {
 
 .value {
   float: left;
-  width: 104px;
+  width: 96px;
   height: 24px;
-  margin: 4px 0px 0px 0px;
+  margin: 2px 0px 0px 0px;
+  font-size: 13px;
 }
 
 .title {
   float: left;
   width: 48px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: bold;
   color: #BDBDBD;  
   height: 24px;
-  margin: 4px 0px 0px 0px;
+  margin: 3px 6px 0px 0px;
   text-transform: uppercase;
 }
 
@@ -73,7 +87,7 @@ hr {
   text-decoration: none;
   font-weight: bold;
   height: 24px;
-  margin: 4px 0px 0px 0px;
+  margin: 2px 0px 0px 0px;
 }
 
 .color {
@@ -82,7 +96,7 @@ hr {
   height: 20px;
   background: #FFFFFF;
   border-radius: 10px;
-  margin: 0px 8px 0px 0px;
+  margin: 0px 12px 0px 0px;
 }
 
 .size {
@@ -90,7 +104,7 @@ hr {
   width: 20px;
   height: 20px;
   background: #FFFFFF;
-  margin: 0px 8px 0px 0px;
+  margin: 0px 12px 0px 0px;
 }
 
 .fill {
@@ -98,7 +112,7 @@ hr {
 }      
 
 .stroke {
-  border: 4px solid #abc;
+  border: 3px solid #abc;
   box-sizing: border-box;
 }
 
