@@ -39,13 +39,13 @@ hr {
 }
 
 .property {
-  height: 37px;
+  height: 36px;
   margin: auto;
   overflow: auto;
 }
 
 .property-description {
-  height: 25px;
+  height: 23px;
 }
 
 .label {
@@ -53,6 +53,7 @@ hr {
   width: 120px;
   height: 24px;
   margin: 4px 0px 0px 0px;
+  font-size: 13px;  
 }
 
 .value {
@@ -70,7 +71,7 @@ hr {
   font-weight: bold;
   color: #BDBDBD;  
   height: 24px;
-  margin: 3px 6px 0px 0px;
+  margin: 4px 6px 0px 0px;
   text-transform: uppercase;
 }
 
@@ -92,19 +93,19 @@ hr {
 
 .color {
   float: left;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: #FFFFFF;
   border-radius: 10px;
-  margin: 0px 12px 0px 0px;
+  margin: 0px 8px 0px 6px;
 }
 
 .size {
   float: left;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   background: #FFFFFF;
-  margin: 0px 12px 0px 0px;
+  margin: 0px 8px 0px 6px;
 }
 
 .fill {

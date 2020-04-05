@@ -109,5 +109,5 @@ figma.on("selectionchange", () => {
   updateUI();
 })
 
-figma.showUI(__html__, { width: 250, height: 285 });
+figma.showUI(__html__, { width: 250, height: 282 });
 updateUI();
