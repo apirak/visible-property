@@ -38,6 +38,6 @@ export async function addTextNearSelected(text:string, name:string){
   );
   (await textNode).name = name;
   if(elementNode.node.parent){
-    elementNode.node.parent.appendChild(textNode);
+    elementNode.node.parent.appendChild((await textNode));
   }
 }

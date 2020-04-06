@@ -1,7 +1,7 @@
 import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, NodeName } from '../types';
 import { prepareValueForUI, selectedFirstNode } from './property';
 import { matchName, setText, addTextNearSelected } from './textUtility';
-import { addLineNearSelected } from './lineUtility';
+import { addLineNearSelected, setFrameHeight, setFrameWidth } from './lineUtility';
 import { BasicNode, nodeFactory } from './basicNode';
 
 
@@ -33,6 +33,21 @@ function updateAllTextProperty() {
   });
 
   figma.notify('Updated 👍');
+}
+
+function updateAllFrameProperty(){
+  const nodes = figma.currentPage.findAll(node => node.type === "FRAME" && node.name.charAt(0) === "#");
+  nodes.forEach(node => {
+    let nodeName:NodeName = matchName(node.name);
+    switch(nodeName.type) {
+      case "width":
+        setFrameWidth(node as FrameNode, nodeFactory(nodeName.id).getWidth());
+        break;
+      case "height":
+        setFrameHeight(node as FrameNode, nodeFactory(nodeName.id).getHeight());
+        break;
+    }
+  });
 }
 
 function addTextProperty(property:string) {
@@ -69,6 +84,7 @@ figma.ui.onmessage = function({ type, payload }: UIAction): void {
       break;
     case UIActionTypes.UPDATE_ALL:
       updateAllTextProperty();
+      updateAllFrameProperty();
       break;
     case UIActionTypes.ADD_FILL:
       addTextProperty("fill");

@@ -1,4 +1,5 @@
 import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, UIInformation } from '../types';
+// import { displayNumber } from '../plugin/lineUtility';
 
 import './ui.css';
 
@@ -39,6 +40,7 @@ function updateSize(type:string, uiInformation:UIInformation) :void {
     if (uiInformation.isSelected && uiInformation.selectedNode) {
       if(type == "height") { size = uiInformation.selectedNode.height; } 
       if(type == "width") { size = uiInformation.selectedNode.width; }
+      // elementValue.innerHTML = displayNumber(size);
       elementValue.innerHTML = String(+parseFloat(size.toFixed(2)));
       elementValue.style.color = normalColor;
       elementAdd.style.display = "block";

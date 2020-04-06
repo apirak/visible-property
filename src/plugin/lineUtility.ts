@@ -1,7 +1,11 @@
 import { Rectangle } from './basicNode';
 import { selectedFirstNode } from './property';
-import { addText } from './textUtility';
+import { addText, setText } from './textUtility';
 import { clone } from './externalUtility';
+
+export function displayNumber(number:Number):string {
+  return String(+parseFloat(number.toFixed(2)))
+}
 
 export async function addLineNearSelected(type:string, frameName:string):Promise<void> {
   const margin = 8;
@@ -33,7 +37,7 @@ export async function addLineNearSelected(type:string, frameName:string):Promise
   let lenght = 0
   if (type == "height") { lenght = elementNode.node.height; }
   if (type == "width") { lenght = elementNode.node.width; }
-  const textNode = await addText(String(+parseFloat(lenght.toFixed(2))), margin, 1);
+  const textNode = await addText(displayNumber(lenght), margin, 1);
   textNode.name = "lenght";
   textNode.textAlignHorizontal = "CENTER";
   textNode.textAlignVertical = "CENTER";   
@@ -104,4 +108,17 @@ export async function addLineNearSelected(type:string, frameName:string):Promise
   if(elementNode.node.parent){
     elementNode.node.parent.appendChild(frame);
   }
+}
+
+
+export function setFrameWidth(frameNode:FrameNode, width:number) {
+  frameNode.resize(width, frameNode.height);
+  const text:TextNode = <TextNode>frameNode.findChild(n => n.type === "TEXT");
+  setText(text, displayNumber(width));
+}
+
+export function setFrameHeight(frameNode:FrameNode, height:number) {
+  frameNode.resize(frameNode.width, height);
+  const text:TextNode = <TextNode>frameNode.findChild(n => n.type === "TEXT");
+  setText(text, displayNumber(height));
 }
