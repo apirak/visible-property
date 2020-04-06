@@ -1,9 +1,11 @@
 import { Rectangle } from './basicNode';
 import { selectedFirstNode } from './property';
 import { addText } from './textUtility';
+import { clone } from './externalUtility';
 
 export async function addLineNearSelected(type:string):Promise<void> {
   const margin = 8;
+  // const lineColor = "C70606";
   let elementNode = <Rectangle> selectedFirstNode();
 
   const frame:FrameNode = figma.createFrame();
@@ -11,19 +13,27 @@ export async function addLineNearSelected(type:string):Promise<void> {
   frame.fills = fills;
 
   const centerLine:LineNode = figma.createLine()
-  centerLine.name = "center line";  
+  centerLine.name = "center line";
+
+  const strokeColor = clone(centerLine.strokes);
+  strokeColor[0].color.r = 0.779;
+  strokeColor[0].color.g = 0.023;
+  strokeColor[0].color.b = 0.023;
+  centerLine.strokes = strokeColor;
 
   const headLine:LineNode = figma.createLine()  
   headLine.name = "head line";  
+  headLine.strokes = strokeColor;
 
   const tailLine:LineNode = figma.createLine()  
   tailLine.name = "tail line";  
+  tailLine.strokes = strokeColor;
 
   let lenght = 0
   if (type == "height") { lenght = elementNode.node.height}
   if (type == "width") { lenght = elementNode.node.width}
-  const textNode = await addText(String(lenght), margin, 1);
-  tailLine.name = "lenght";
+  const textNode = await addText(String(+parseFloat(lenght.toFixed(2))), margin, 1);
+  textNode.name = "lenght";
   textNode.textAlignHorizontal = "CENTER";
   textNode.textAlignVertical = "CENTER";   
 

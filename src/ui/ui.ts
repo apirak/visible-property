@@ -39,7 +39,7 @@ function updateSize(type:string, uiInformation:UIInformation) :void {
     if (uiInformation.isSelected && uiInformation.selectedNode) {
       if(type == "height") { size = uiInformation.selectedNode.height; } 
       if(type == "width") { size = uiInformation.selectedNode.width; }
-      elementValue.innerHTML = String(size);
+      elementValue.innerHTML = String(+parseFloat(size.toFixed(2)));
       elementValue.style.color = normalColor;
       elementAdd.style.display = "block";
     } else {
