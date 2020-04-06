@@ -3,7 +3,7 @@ import { selectedFirstNode } from './property';
 import { addText } from './textUtility';
 import { clone } from './externalUtility';
 
-export async function addLineNearSelected(type:string):Promise<void> {
+export async function addLineNearSelected(type:string, frameName:string):Promise<void> {
   const margin = 8;
   // const lineColor = "C70606";
   let elementNode = <Rectangle> selectedFirstNode();
@@ -11,8 +11,9 @@ export async function addLineNearSelected(type:string):Promise<void> {
   const frame:FrameNode = figma.createFrame();
   const fills:Paint[] = [];
   frame.fills = fills;
+  frame.name = frameName;
 
-  const centerLine:LineNode = figma.createLine()
+  const centerLine:LineNode = figma.createLine();
   centerLine.name = "center line";
 
   const strokeColor = clone(centerLine.strokes);
@@ -21,17 +22,17 @@ export async function addLineNearSelected(type:string):Promise<void> {
   strokeColor[0].color.b = 0.023;
   centerLine.strokes = strokeColor;
 
-  const headLine:LineNode = figma.createLine()  
+  const headLine:LineNode = figma.createLine(); 
   headLine.name = "head line";  
   headLine.strokes = strokeColor;
 
-  const tailLine:LineNode = figma.createLine()  
+  const tailLine:LineNode = figma.createLine(); 
   tailLine.name = "tail line";  
   tailLine.strokes = strokeColor;
 
   let lenght = 0
-  if (type == "height") { lenght = elementNode.node.height}
-  if (type == "width") { lenght = elementNode.node.width}
+  if (type == "height") { lenght = elementNode.node.height; }
+  if (type == "width") { lenght = elementNode.node.width; }
   const textNode = await addText(String(+parseFloat(lenght.toFixed(2))), margin, 1);
   textNode.name = "lenght";
   textNode.textAlignHorizontal = "CENTER";
@@ -41,11 +42,10 @@ export async function addLineNearSelected(type:string):Promise<void> {
     case "height":
       frame.x = elementNode.node.x + elementNode.node.width + margin;
       frame.y = elementNode.node.y;
-      frame.name = "height"
       frame.resizeWithoutConstraints(100, elementNode.node.height); 
 
       centerLine.x = Math.round((margin/2)-1);
-      centerLine.y = 1 ;
+      centerLine.y = 1;
       centerLine.resizeWithoutConstraints(elementNode.node.height, 0);
       centerLine.rotation = -90;
       centerLine.constraints = <Constraints> {horizontal: "MIN", vertical:"STRETCH"};  
@@ -69,7 +69,6 @@ export async function addLineNearSelected(type:string):Promise<void> {
     case "width":
       frame.x = elementNode.node.x;
       frame.y = elementNode.node.y + elementNode.node.height + margin;
-      frame.name = "width"
       frame.resizeWithoutConstraints(100, elementNode.node.width); 
 
       centerLine.x = 1;
@@ -89,7 +88,6 @@ export async function addLineNearSelected(type:string):Promise<void> {
       tailLine.rotation = -90;
       tailLine.constraints = <Constraints> {horizontal: "MAX", vertical:"MIN"};   
         
-      // textNode.rotation = 0;
       textNode.x = Math.round((elementNode.node.width-textNode.width)/2);
       textNode.y = margin;
       textNode.constraints = <Constraints> {horizontal: "CENTER", vertical:"MIN"};
@@ -98,10 +96,10 @@ export async function addLineNearSelected(type:string):Promise<void> {
       break;
   }  
   
-  frame.appendChild(centerLine)
+  frame.appendChild(centerLine);
   frame.appendChild(headLine);
   frame.appendChild(tailLine);
-  frame.appendChild(textNode)
+  frame.appendChild(textNode);
 
   if(elementNode.node.parent){
     elementNode.node.parent.appendChild(frame);

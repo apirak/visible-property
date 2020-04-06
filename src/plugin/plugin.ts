@@ -57,21 +57,8 @@ function addTextProperty(property:string) {
 
 function addScaleProperty(property:string) {
   let selectedNode:BasicNode = selectedFirstNode();
-  let textValue:string = "";
-  let long:number = 1;
-
-  switch(property) {
-    case "height":
-      textValue = String(selectedNode.getWidth());
-      long = selectedNode.getHeight();
-      break;
-    case "width":
-      textValue = String(selectedNode.getHeight());
-      long = selectedNode.getWidth();
-      break;
-  }
-  console.log("long: "+long);
-  addLineNearSelected(property);
+  let frameName:string = "#"+selectedNode.getID() + " " + property
+  addLineNearSelected(property, frameName);
 }
 
 // Listen to messages received from the plugin UI (src/ui/ui.ts)
