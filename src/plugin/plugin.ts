@@ -1,7 +1,9 @@
 import { UIActionTypes, UIAction, WorkerActionTypes, WorkerAction, NodeName } from '../types';
 import { prepareValueForUI, selectedFirstNode } from './property';
 import { matchName, setText, addTextNearSelected } from './textUtility';
+import { addLineNearSelected, setFrameHeight, setFrameWidth } from './lineUtility';
 import { BasicNode, nodeFactory } from './basicNode';
+
 
 function postMessageToUI({ type, payload }: WorkerAction): void {
   figma.ui.postMessage({ type, payload });
@@ -33,13 +35,28 @@ function updateAllTextProperty() {
   figma.notify('Updated 👍');
 }
 
+function updateAllFrameProperty(){
+  const nodes = figma.currentPage.findAll(node => node.type === "FRAME" && node.name.charAt(0) === "#");
+  nodes.forEach(node => {
+    let nodeName:NodeName = matchName(node.name);
+    switch(nodeName.type) {
+      case "width":
+        setFrameWidth(node as FrameNode, nodeFactory(nodeName.id).getWidth());
+        break;
+      case "height":
+        setFrameHeight(node as FrameNode, nodeFactory(nodeName.id).getHeight());
+        break;
+    }
+  });
+}
+
 function addTextProperty(property:string) {
   let selectedNode:BasicNode = selectedFirstNode();
   let textValue:string = "";
 
   switch(property) {
     case "fill":
-      textValue = selectedNode.getFill();
+      textValue = selectedNode.getFill()
       break;
     case "stroke":
       textValue = selectedNode.getStroke();
@@ -53,6 +70,12 @@ function addTextProperty(property:string) {
   addTextNearSelected(textValue, textName);
 }
 
+function addScaleProperty(property:string) {
+  let selectedNode:BasicNode = selectedFirstNode();
+  let frameName:string = "#"+selectedNode.getID() + " " + property
+  addLineNearSelected(property, frameName);
+}
+
 // Listen to messages received from the plugin UI (src/ui/ui.ts)
 figma.ui.onmessage = function({ type, payload }: UIAction): void {
   switch (type) {
@@ -61,6 +84,7 @@ figma.ui.onmessage = function({ type, payload }: UIAction): void {
       break;
     case UIActionTypes.UPDATE_ALL:
       updateAllTextProperty();
+      updateAllFrameProperty();
       break;
     case UIActionTypes.ADD_FILL:
       addTextProperty("fill");
@@ -71,6 +95,12 @@ figma.ui.onmessage = function({ type, payload }: UIAction): void {
     case UIActionTypes.ADD_DESCRIPTION:
       addTextProperty("description");
       break;
+    case UIActionTypes.ADD_HEIGHT:
+      addScaleProperty("height");
+      break;           
+    case UIActionTypes.ADD_WIDTH:
+      addScaleProperty("width");
+      break;      
   }
 };
 
@@ -82,5 +112,5 @@ figma.on("selectionchange", () => {
   updateUI();
 })
 
-figma.showUI(__html__, { width: 250, height: 285 });
+figma.showUI(__html__, { width: 250, height: 282 });
 updateUI();

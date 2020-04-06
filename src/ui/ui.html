@@ -1,25 +1,41 @@
-<main class="container">
-  <h3>Fills</h3>
+
+<!-- <%= require('./Width.svg') %> -->
+
+<main class="container container-top">
   <div class="property">
+    <div id="fill_1_title" class="title">Fill</div>
     <div id="fill_1_color" class="color fill">&nbsp;</div>
     <div id="fill_1_value" class="value">No fill</div>
     <a   id="fill_1_add" class="button" href="#">Add</a>
   </div>
-  <h3>Stroke</h3>
   <div class="property">
+    <div id="stroke_1_title" class="title">Stroke</div>
     <div id="stroke_1_color" class="color stroke">&nbsp;</div>
     <div id="stroke_1_value" class="value">No stroke</div>
     <a   id="stroke_1_add" class="button" href="#">Add</a>
   </div> 
-  <h3>Component description</h3>
   <div class="property">
+    <div id="height_1_title" class="title">height</div>
+    <div id="height_1_icon" class="size"><img width="18" src="<%= require('./Height.svg').default %>" /></div>
+    <div id="height_value" class="value">No height</div>
+    <a   id="height_add" class="button" href="#">Add</a>
+  </div>
+  <div class="property">
+    <div id="width_title" class="title">Width</div>
+    <div id="width_color" class="size"><img width="18" src="<%= require('./Width.svg').default %>" /></div>
+    <div id="width_value" class="value">No width</div>
+    <a   id="width_add" class="button" href="#">Add</a>
+  </div>   
+  <h3>Component description</h3>
+  <div class="property property-description">
     <div id="description_value" class="value description">Not a component</div>
     <a   id="description_add" class="button" href="#">Add</a>
   </div>
-  <hr/>
+</main>
+<hr/>
+<main class="container">
   <div>
     <div class="label"><span id="visibleProperty">0</span> Visible Properties</div>
     <a id="updateAll" class="button" href="#">Update all</a>
   <div>
-
 </main>

@@ -1,5 +1,4 @@
 // Get property from Node
-import { colorToHex } from './colorUtility';
 import { UIInformation, NodeInfo } from '../types';
 import { BasicNode, Rectangle, Component, nodeFactory} from './basicNode';
 
@@ -31,6 +30,8 @@ export function prepareValueForUI():UIInformation{
       fillColor: selectedNode.getFill(),
       strokeColor: selectedNode.getStroke(),
       description: selectedNode.getDescription(),
+      width: selectedNode.getWidth(),
+      height: selectedNode.getHeight(),
     }
     
     uiInformation.selectedNode = nodeInfo;

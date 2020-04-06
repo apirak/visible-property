@@ -6,6 +6,8 @@ export enum UIActionTypes {
   ADD_FILL = 'ADD_FILL',
   ADD_STROKE = 'ADD_STROKE',
   ADD_DESCRIPTION = 'ADD_DESCRIPTION',
+  ADD_WIDTH = 'ADD_WIDTH',
+  ADD_HEIGHT = 'ADD_HEIGHT',
 }
 
 export interface UIAction {
@@ -16,7 +18,6 @@ export interface UIAction {
 
 // Worker actions
 export enum WorkerActionTypes {
-  CREATE_RECTANGLE_NOTIFY = 'CREATE_RECTANGLE_NOTIFY',
   UPDATE_SELECTED_PROPERTY= 'UPDATE_SELECTED_PROPERTY',
   UPDATE_UI_PROPERTY = 'UPDATE_UI_PROPERTY',
   UPDATE_UI_PROPERTY_NOTIFY = 'UPDATE_UI_PROPERTY_NOTIFY',
@@ -43,4 +44,6 @@ export interface NodeInfo {
   fillColor?: string;
   strokeColor?: string;
   description?: string;
+  width: number;
+  height: number;
 }
