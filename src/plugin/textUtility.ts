@@ -22,8 +22,8 @@ export async function setText(text:TextNode, newCharacters:string) {
 export async function addText(text:string, x:number, y:number):Promise<TextNode>{
   await figma.loadFontAsync({family:"Roboto", style: "Regular"});
   const textNode = figma.createText();
-  textNode.fontSize = 12;
   textNode.fontName = {family:"Roboto", style: "Regular"}
+  textNode.fontSize = 12;
   textNode.x = x;
   textNode.y = y;
   textNode.characters = text;
@@ -32,8 +32,8 @@ export async function addText(text:string, x:number, y:number):Promise<TextNode>
 
 export async function addTextNearSelected(text:string, name:string){
   let elementNode = <Rectangle> selectedFirstNode();
-  const textNode = addText(text, 
-    elementNode.node.x, 
+  const textNode = addText(text,
+    elementNode.node.x,
     elementNode.node.y + elementNode.node.height + 20
   );
   (await textNode).name = name;
